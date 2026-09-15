@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brume: #E3E8EF;
+  --color-verre: #F3F5F9;
+  --color-encre: #1F2531;
+  --color-gris: #7B8496;
+  --color-trait: #D6DCE5;
+  --color-ardoise: #343B47;
+  --color-acier: #8A9BB8;
+  --color-signal: #E8492E;
+  --color-signal-fonce: #CC3A21;
+  --color-citron: #EBF01C;
+}
+
+@layer base {
+  html {
+    background: var(--color-brume);
+    color: var(--color-encre);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    min-height: 100vh;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .panneau {
+    background: rgb(245 247 250 / 0.86);
+    border: 1px solid rgb(255 255 255 / 0.75);
+    border-radius: 28px;
+    backdrop-filter: blur(14px);
+  }
+  .verre-sombre {
+    background: rgb(46 53 65 / 0.84);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    border-radius: 22px;
+    backdrop-filter: blur(16px);
+    color: #fff;
+  }
+  .chiffre {
+    font-weight: 200;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[15px] font-normal transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-signal {
+    @apply bg-signal text-white hover:bg-signal-fonce;
+  }
+  .btn-clair {
+    @apply border border-trait bg-white/70 text-encre hover:bg-white;
+  }
+  .btn-sombre {
+    @apply bg-ardoise text-white hover:bg-encre;
+  }
+  .champ {
+    @apply w-full rounded-2xl border border-trait bg-white/80 px-4 py-3 text-[15px] font-normal text-encre outline-none transition-colors placeholder:text-gris/70 focus:border-acier focus:bg-white;
+  }
+  .libelle {
+    @apply mb-1.5 block text-sm text-gris;
+  }
+}
+
+@keyframes montee {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.apparition { animation: montee 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
