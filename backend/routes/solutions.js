@@ -1,0 +1,30 @@
+const router = require('express').Router();
+const pool = require('../config/db');
+
+const CHAMPS = `id, titre, slug, description_courte, description, probleme_resolu, image_url, en_vedette, cree_le`;
+
+router.get('/', async (req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT ${CHAMPS} FROM solutions WHERE actif = TRUE ORDER BY ordre ASC, cree_le DESC`
+    );
+    res.json(rows);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/:slug', async (req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT ${CHAMPS} FROM solutions WHERE slug = $1 AND actif = TRUE`,
+      [req.params.slug]
+    );
+    if (!rows[0]) return res.status(404).json({ erreur: 'Solution introuvable.' });
+    res.json(rows[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+module.exports = router;

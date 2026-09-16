@@ -1,11 +1,15 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
-  ArrowDown, ArrowUpRight, Check, Code2, GraduationCap, Headset,
-  Lock, Network, ShieldCheck, Settings2, Workflow,
+  ArrowDown, ArrowRight, ArrowUpRight, Check, Code2, GraduationCap, Headset,
+  Lock, Network, ShieldCheck, Settings2, Sparkles, User, Workflow,
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
+import { Chargement, Erreur } from '../components/Etat';
 import { useLangue } from '../context/LangueContext';
+import { api } from '../lib/api';
 import { SITE } from '../config/site';
 
 const ICONES_DOMAINES = [Code2, Settings2, Network];
@@ -34,6 +38,15 @@ function DecorHero() {
 
 export default function Accueil() {
   const { t } = useLangue();
+  const [equipe, setEquipe] = useState(null);
+  const [erreurEquipe, setErreurEquipe] = useState(null);
+  const [solutions, setSolutions] = useState(null);
+  const [erreurSolutions, setErreurSolutions] = useState(null);
+
+  useEffect(() => {
+    api('/api/equipe').then(setEquipe).catch((e) => setErreurEquipe(e.message));
+    api('/api/solutions').then(setSolutions).catch((e) => setErreurSolutions(e.message));
+  }, []);
 
   return (
     <div>
@@ -76,6 +89,37 @@ export default function Accueil() {
         </Reveal>
       </section>
 
+      {/* Notre équipe */}
+      <section id="equipe" className="mx-auto max-w-[1320px] px-4 py-20 sm:px-6 sm:py-28">
+        <Reveal>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">{t.equipe.eyebrow}</p>
+          <h2 className="mt-3 max-w-2xl text-4xl font-normal tracking-tight sm:text-5xl">{t.equipe.titre}</h2>
+        </Reveal>
+
+        <div className="mt-12">
+          {erreurEquipe && <Erreur message={erreurEquipe} />}
+          {!equipe && !erreurEquipe && <Chargement />}
+          {equipe && equipe.length > 0 && (
+            <Reveal as="div" groupe className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+              {equipe.map((m) => (
+                <div key={m.id} className="panneau flex flex-col items-center p-6 text-center transition-transform duration-500 hover:-translate-y-1">
+                  {m.photo_url ? (
+                    <img src={m.photo_url} alt={m.nom} className="h-24 w-24 rounded-full object-cover" />
+                  ) : (
+                    <div className="grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-[#C9D2E0] to-[#95A5C0] text-white">
+                      <User className="h-9 w-9" strokeWidth={1} />
+                    </div>
+                  )}
+                  <h3 className="mt-4 text-lg font-normal">{m.nom}</h3>
+                  <p className="text-sm text-signal">{m.role}</p>
+                  {m.bio && <p className="mt-2 text-sm text-gris">{m.bio}</p>}
+                </div>
+              ))}
+            </Reveal>
+          )}
+        </div>
+      </section>
+
       {/* Domaines d'expertise */}
       <section id="services" className="mx-auto max-w-[1320px] px-4 py-20 sm:px-6 sm:py-28">
         <Reveal>
@@ -106,6 +150,50 @@ export default function Accueil() {
             );
           })}
         </Reveal>
+      </section>
+
+      {/* Nos solutions */}
+      <section id="solutions" className="mx-auto max-w-[1320px] px-4 py-20 sm:px-6 sm:py-28">
+        <Reveal>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">{t.solutions.eyebrow}</p>
+          <h2 className="mt-3 max-w-2xl text-4xl font-normal tracking-tight sm:text-5xl">{t.solutions.titre}</h2>
+        </Reveal>
+
+        <div className="mt-12">
+          {erreurSolutions && <Erreur message={erreurSolutions} />}
+          {!solutions && !erreurSolutions && <Chargement />}
+          {solutions && solutions.length === 0 && (
+            <div className="panneau flex flex-col items-center gap-2 px-6 py-16 text-center">
+              <p className="text-xl font-normal">{t.solutions.videTitre}</p>
+              <p className="max-w-md text-gris">{t.solutions.videTexte}</p>
+            </div>
+          )}
+          {solutions && solutions.length > 0 && (
+            <Reveal as="div" groupe className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {solutions.map((s) => (
+                <Link key={s.id} to={`/solutions/${s.slug}`} className="panneau group flex flex-col overflow-hidden p-3">
+                  <div className="overflow-hidden rounded-[20px] bg-ardoise">
+                    {s.image_url ? (
+                      <img src={s.image_url} alt={s.titre} loading="lazy"
+                        className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    ) : (
+                      <div className="grid aspect-[4/3] w-full place-items-center text-white/50">
+                        <Sparkles className="h-10 w-10" strokeWidth={1} />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col px-2 pb-1 pt-4">
+                    <h3 className="text-lg font-normal leading-snug">{s.titre}</h3>
+                    {s.description_courte && <p className="mt-1.5 text-sm text-gris">{s.description_courte}</p>}
+                    <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-signal">
+                      {t.solutions.enSavoirPlus} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </Reveal>
+          )}
+        </div>
       </section>
 
       {/* Notre méthode, plein écran */}

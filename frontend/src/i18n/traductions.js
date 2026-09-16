@@ -13,7 +13,9 @@ export const LANGUE_DEFAUT = 'fr';
 export const TRADUCTIONS = {
   fr: {
     nav: {
+      equipe: 'Équipe',
       expertises: 'Expertises',
+      solutions: 'Solutions',
       methode: 'Notre méthode',
       engagements: 'Nos engagements',
       contact: 'Contact',
@@ -63,6 +65,25 @@ export const TRADUCTIONS = {
           items: ['Installation et sécurisation de réseau', 'Support technique et dépannage', 'Maintenance et suivi dans la durée'],
         },
       ],
+    },
+    equipe: {
+      eyebrow: 'Notre équipe',
+      titre: 'Les personnes derrière FoxGroup',
+    },
+    solutions: {
+      eyebrow: 'Nos solutions',
+      titre: 'Ce que nous avons déjà réalisé',
+      enSavoirPlus: 'En savoir plus',
+      videTitre: 'Nos solutions arrivent bientôt',
+      videTexte: 'Revenez prochainement découvrir nos projets.',
+    },
+    solutionDetail: {
+      retour: 'Retour à l’accueil',
+      introuvableTitre: 'Cette solution est introuvable',
+      introuvableTexte: 'Elle a peut-être été retirée.',
+      ceQueCaResout: 'Ce que ça résout',
+      cta: 'Commander ou poser une question',
+      message: (titre) => `Bonjour, je suis intéressé(e) par « ${titre} ». J'aimerais en savoir plus et/ou passer commande.`,
     },
     methode: {
       eyebrow: 'Notre méthode',
@@ -128,7 +149,9 @@ export const TRADUCTIONS = {
 
   en: {
     nav: {
+      equipe: 'Team',
       expertises: 'Expertise',
+      solutions: 'Solutions',
       methode: 'How we work',
       engagements: 'Our commitments',
       contact: 'Contact',
@@ -178,6 +201,25 @@ export const TRADUCTIONS = {
           items: ['Network installation and security', 'Technical support and troubleshooting', 'Ongoing maintenance and monitoring'],
         },
       ],
+    },
+    equipe: {
+      eyebrow: 'Our team',
+      titre: 'The people behind FoxGroup',
+    },
+    solutions: {
+      eyebrow: 'Our solutions',
+      titre: "What we've already built",
+      enSavoirPlus: 'Learn more',
+      videTitre: 'Our solutions are coming soon',
+      videTexte: 'Check back soon to see our projects.',
+    },
+    solutionDetail: {
+      retour: 'Back to home',
+      introuvableTitre: 'This solution could not be found',
+      introuvableTexte: 'It may have been removed.',
+      ceQueCaResout: 'What it solves',
+      cta: 'Order or ask a question',
+      message: (titre) => `Hello, I'm interested in "${titre}". I'd like to know more and/or place an order.`,
     },
     methode: {
       eyebrow: 'Our method',
@@ -245,7 +287,9 @@ export const TRADUCTIONS = {
   // personne lingalaphone avant publication définitive : voir le message qui accompagne ce fichier.
   ln: {
     nav: {
+      equipe: 'Ekipi',
       expertises: 'Misala na biso',
+      solutions: 'Ba solution',
       methode: 'Ndenge tosalaka',
       engagements: 'Bilaka na biso',
       contact: 'Contact',
@@ -296,6 +340,25 @@ export const TRADUCTIONS = {
           items: ['Kotia na kobatela réseau', 'Lisungi ya tekiniki', 'Maintenance na bokengeli tango nyonso'],
         },
       ],
+    },
+    equipe: {
+      eyebrow: 'Ekipi na biso',
+      titre: 'Bato oyo batambwisaka FoxGroup',
+    },
+    solutions: {
+      eyebrow: 'Ba solution na biso',
+      titre: 'Oyo tosili kosala',
+      enSavoirPlus: 'Yebá mingi',
+      videTitre: 'Ba solution na biso ekoya kala te',
+      videTexte: 'Zongá noki mpo na komona misala na biso.',
+    },
+    solutionDetail: {
+      retour: 'Zongá na ndako',
+      introuvableTitre: 'Solution oyo emonani te',
+      introuvableTexte: 'Ekoki kozala ete balongoli yango.',
+      ceQueCaResout: 'Mokakatano oyo esilisaka',
+      cta: 'Tuná to somba',
+      message: (titre) => `Mbote, nalingi koyeba mingi to kosomba « ${titre} ».`,
     },
     methode: {
       eyebrow: 'Ndenge na biso',
