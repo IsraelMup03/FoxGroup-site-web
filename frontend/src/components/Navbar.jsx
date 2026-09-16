@@ -1,21 +1,19 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Menu, ShoppingBag, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import Logo from './Logo';
-import { usePanier } from '../context/PanierContext';
+import { SITE } from '../config/site';
 
 const LIENS = [
-  { vers: '/', libelle: 'Accueil', fin: true },
-  { vers: '/catalogue', libelle: 'Catalogue' },
+  { vers: '#services', libelle: 'Expertises' },
+  { vers: '#methode', libelle: 'Notre méthode' },
+  { vers: '#engagements', libelle: 'Nos engagements' },
+  { vers: '#contact', libelle: 'Contact' },
 ];
 
 export default function Navbar({ surImage = false }) {
-  const { nombre } = usePanier();
   const [ouvert, setOuvert] = useState(false);
   const couleur = surImage ? 'text-white' : 'text-encre';
-
-  const classeLien = ({ isActive }) =>
-    `pb-1 border-b-2 transition-colors ${isActive ? 'border-citron' : 'border-transparent hover:border-current/30'}`;
 
   return (
     <header className={`relative z-20 ${couleur}`}>
@@ -27,25 +25,17 @@ export default function Navbar({ surImage = false }) {
 
         <nav className="hidden items-center gap-8 text-[15px] font-normal sm:flex" aria-label="Navigation principale">
           {LIENS.map((l) => (
-            <NavLink key={l.vers} to={l.vers} end={l.fin} className={classeLien}>
+            <a key={l.vers} href={l.vers} className="pb-1 border-b-2 border-transparent transition-colors hover:border-current/30">
               {l.libelle}
-            </NavLink>
+            </a>
           ))}
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            to="/panier"
-            className={`relative grid h-11 w-11 place-items-center rounded-full ${surImage ? 'bg-white/15 hover:bg-white/25' : 'bg-white/70 hover:bg-white'}`}
-            aria-label={`Panier, ${nombre} article${nombre > 1 ? 's' : ''}`}
-          >
-            <ShoppingBag className="h-5 w-5" strokeWidth={1.6} />
-            {nombre > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-citron px-1 text-xs font-medium text-encre">
-                {nombre}
-              </span>
-            )}
-          </Link>
+          <a href={SITE.whatsappUrl} target="_blank" rel="noreferrer"
+            className={`hidden btn sm:inline-flex ${surImage ? 'bg-white/15 text-white hover:bg-white/25' : 'btn-sombre'}`}>
+            Nous contacter
+          </a>
           <button
             type="button"
             className={`grid h-11 w-11 place-items-center rounded-full sm:hidden ${surImage ? 'bg-white/15' : 'bg-white/70'}`}
@@ -61,11 +51,15 @@ export default function Navbar({ surImage = false }) {
       {ouvert && (
         <nav className="panneau mt-3 flex flex-col p-2 text-encre sm:hidden" aria-label="Navigation mobile">
           {LIENS.map((l) => (
-            <NavLink key={l.vers} to={l.vers} end={l.fin} onClick={() => setOuvert(false)}
+            <a key={l.vers} href={l.vers} onClick={() => setOuvert(false)}
               className="rounded-2xl px-4 py-3 font-normal hover:bg-white">
               {l.libelle}
-            </NavLink>
+            </a>
           ))}
+          <a href={SITE.whatsappUrl} target="_blank" rel="noreferrer" onClick={() => setOuvert(false)}
+            className="rounded-2xl px-4 py-3 font-normal hover:bg-white">
+            Nous contacter
+          </a>
         </nav>
       )}
     </header>

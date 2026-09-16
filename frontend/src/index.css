@@ -20,6 +20,7 @@
     background: var(--color-brume);
     color: var(--color-encre);
     -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
   }
   body {
     font-family: var(--font-sans);
@@ -59,16 +60,16 @@
     line-height: 1;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[15px] font-normal transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[15px] font-normal transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-signal {
-    @apply bg-signal text-white hover:bg-signal-fonce;
+    @apply bg-signal text-white shadow-[0_0_0_rgba(232,73,46,0)] hover:-translate-y-0.5 hover:bg-signal-fonce hover:shadow-[0_12px_24px_-8px_rgba(232,73,46,0.55)];
   }
   .btn-clair {
-    @apply border border-trait bg-white/70 text-encre hover:bg-white;
+    @apply border border-trait bg-white/70 text-encre hover:-translate-y-0.5 hover:bg-white;
   }
   .btn-sombre {
-    @apply bg-ardoise text-white hover:bg-encre;
+    @apply bg-ardoise text-white hover:-translate-y-0.5 hover:bg-encre;
   }
   .champ {
     @apply w-full rounded-2xl border border-trait bg-white/80 px-4 py-3 text-[15px] font-normal text-encre outline-none transition-colors placeholder:text-gris/70 focus:border-acier focus:bg-white;
@@ -83,3 +84,56 @@
   to { opacity: 1; transform: none; }
 }
 .apparition { animation: montee 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.apparition-1 { animation-delay: 0.08s; }
+.apparition-2 { animation-delay: 0.22s; }
+.apparition-3 { animation-delay: 0.36s; }
+.apparition-4 { animation-delay: 0.5s; }
+
+/* Révélation au défilement */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-groupe > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal-groupe.visible > * { opacity: 1; transform: none; }
+.reveal-groupe.visible > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-groupe.visible > *:nth-child(2) { transition-delay: 0.14s; }
+.reveal-groupe.visible > *:nth-child(3) { transition-delay: 0.23s; }
+.reveal-groupe.visible > *:nth-child(4) { transition-delay: 0.32s; }
+.reveal-groupe.visible > *:nth-child(5) { transition-delay: 0.41s; }
+.reveal-groupe.visible > *:nth-child(6) { transition-delay: 0.5s; }
+
+/* Lueurs d'ambiance du héros : dérive lente et respiration */
+@keyframes derive {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-3%, 4%) scale(1.08); }
+}
+@keyframes respiration {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.lueur { animation: derive 16s ease-in-out infinite, respiration 8s ease-in-out infinite; }
+.lueur-lente { animation: derive 22s ease-in-out infinite reverse, respiration 10s ease-in-out infinite; }
+
+/* Variante pour une lueur déjà centrée via translate(-50%,-50%) */
+@keyframes derive-centree {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(calc(-50% - 3%), calc(-50% + 4%)) scale(1.08); }
+}
+.lueur-centree { animation: derive-centree 16s ease-in-out infinite, respiration 8s ease-in-out infinite; }
+
+@keyframes derive-centree-x {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+  50% { transform: translateX(calc(-50% - 3%)) translateY(4%) scale(1.08); }
+}
+.lueur-centree-x { animation: derive-centree-x 16s ease-in-out infinite, respiration 8s ease-in-out infinite; }
