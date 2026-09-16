@@ -2,18 +2,21 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import Logo from './Logo';
+import SelecteurLangue from './SelecteurLangue';
+import { useLangue } from '../context/LangueContext';
 import { SITE } from '../config/site';
 
-const LIENS = [
-  { vers: '#services', libelle: 'Expertises' },
-  { vers: '#methode', libelle: 'Notre méthode' },
-  { vers: '#engagements', libelle: 'Nos engagements' },
-  { vers: '#contact', libelle: 'Contact' },
-];
-
 export default function Navbar({ surImage = false }) {
+  const { t } = useLangue();
   const [ouvert, setOuvert] = useState(false);
   const couleur = surImage ? 'text-white' : 'text-encre';
+
+  const LIENS = [
+    { vers: '#services', libelle: t.nav.expertises },
+    { vers: '#methode', libelle: t.nav.methode },
+    { vers: '#engagements', libelle: t.nav.engagements },
+    { vers: '#contact', libelle: t.nav.contact },
+  ];
 
   return (
     <header className={`relative z-20 ${couleur}`}>
@@ -32,13 +35,14 @@ export default function Navbar({ surImage = false }) {
         </nav>
 
         <div className="flex items-center gap-2">
+          <SelecteurLangue surImage={surImage} />
           <a href={SITE.whatsappUrl} target="_blank" rel="noreferrer"
             className={`hidden btn sm:inline-flex ${surImage ? 'bg-white/15 text-white hover:bg-white/25' : 'btn-sombre'}`}>
-            Nous contacter
+            {t.nav.contacter}
           </a>
           <button
             type="button"
-            className={`grid h-11 w-11 place-items-center rounded-full sm:hidden ${surImage ? 'bg-white/15' : 'bg-white/70'}`}
+            className={`grid h-11 w-11 shrink-0 place-items-center rounded-full sm:hidden ${surImage ? 'bg-white/15' : 'bg-white/70'}`}
             onClick={() => setOuvert((o) => !o)}
             aria-expanded={ouvert}
             aria-label="Menu"
@@ -58,7 +62,7 @@ export default function Navbar({ surImage = false }) {
           ))}
           <a href={SITE.whatsappUrl} target="_blank" rel="noreferrer" onClick={() => setOuvert(false)}
             className="rounded-2xl px-4 py-3 font-normal hover:bg-white">
-            Nous contacter
+            {t.nav.contacter}
           </a>
         </nav>
       )}

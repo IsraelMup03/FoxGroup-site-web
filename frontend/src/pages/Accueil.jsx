@@ -5,6 +5,7 @@ import {
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
+import { useLangue } from '../context/LangueContext';
 import { SITE } from '../config/site';
 
 const ICONES_DOMAINES = [Code2, Settings2, Network];
@@ -32,6 +33,8 @@ function DecorHero() {
 }
 
 export default function Accueil() {
+  const { t } = useLangue();
+
   return (
     <div>
       {/* Hero plein écran */}
@@ -41,23 +44,23 @@ export default function Accueil() {
           <Navbar surImage />
 
           <div className="flex flex-1 flex-col justify-center py-14">
-            <p className="apparition apparition-1 text-sm font-medium uppercase tracking-[0.2em] text-white/60">{SITE.slogan}</p>
+            <p className="apparition apparition-1 text-sm font-medium uppercase tracking-[0.2em] text-white/60">{t.hero.slogan}</p>
             <h1 className="apparition apparition-2 mt-4 max-w-3xl text-[42px] font-semibold leading-[1.04] tracking-[-0.02em] sm:text-[76px]">
-              Vos idées,<br />nos réalités digitales.
+              {t.hero.titre1}<br />{t.hero.titre2}
             </h1>
-            <p className="apparition apparition-3 mt-6 max-w-xl text-lg text-white/70">{SITE.accroche}</p>
+            <p className="apparition apparition-3 mt-6 max-w-xl text-lg text-white/70">{t.hero.accroche}</p>
             <div className="apparition apparition-4 mt-9 flex flex-wrap items-center gap-3">
               <a href={SITE.whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-signal px-7 py-3.5 text-base">
-                Discuter sur WhatsApp <ArrowUpRight className="h-4 w-4" strokeWidth={1.8} />
+                {t.hero.cta1} <ArrowUpRight className="h-4 w-4" strokeWidth={1.8} />
               </a>
               <a href="#methode" className="btn bg-white/10 px-7 py-3.5 text-base text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/20">
-                Comment nous travaillons
+                {t.hero.cta2}
               </a>
             </div>
           </div>
 
           <a href="#services" className="apparition apparition-4 mb-8 inline-flex items-center gap-2 self-start text-sm text-white/50 transition-colors hover:text-white">
-            <ArrowDown className="h-4 w-4 animate-bounce" strokeWidth={1.8} /> Découvrir
+            <ArrowDown className="h-4 w-4 animate-bounce" strokeWidth={1.8} /> {t.hero.decouvrir}
           </a>
         </div>
       </section>
@@ -65,10 +68,10 @@ export default function Accueil() {
       {/* Qui sommes-nous */}
       <section className="mx-auto max-w-[1320px] px-4 py-20 sm:px-6 sm:py-28">
         <Reveal>
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">Qui sommes-nous</p>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">{t.apropos.eyebrow}</p>
           <div className="mt-5 grid gap-8 lg:grid-cols-2 lg:gap-16">
-            <h2 className="text-3xl font-normal leading-snug tracking-tight sm:text-4xl">{SITE.accroche}</h2>
-            <p className="text-lg text-gris">{SITE.description}</p>
+            <h2 className="text-3xl font-normal leading-snug tracking-tight sm:text-4xl">{t.hero.accroche}</h2>
+            <p className="text-lg text-gris">{t.apropos.description}</p>
           </div>
         </Reveal>
       </section>
@@ -76,22 +79,22 @@ export default function Accueil() {
       {/* Domaines d'expertise */}
       <section id="services" className="mx-auto max-w-[1320px] px-4 py-20 sm:px-6 sm:py-28">
         <Reveal>
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">Nos expertises</p>
-          <h2 className="mt-3 max-w-2xl text-4xl font-normal tracking-tight sm:text-5xl">Ce que nous construisons pour vous</h2>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">{t.domaines.eyebrow}</p>
+          <h2 className="mt-3 max-w-2xl text-4xl font-normal tracking-tight sm:text-5xl">{t.domaines.titre}</h2>
         </Reveal>
 
         <Reveal as="div" groupe className="mt-12 divide-y divide-trait border-y border-trait sm:mt-16">
-          {SITE.domaines.map((d, i) => {
+          {t.domaines.liste.map((d, i) => {
             const Icone = ICONES_DOMAINES[i] ?? Code2;
             return (
-              <div key={d.titre} className="group grid gap-5 py-9 sm:grid-cols-[80px_1fr_auto] sm:gap-6">
+              <div key={i} className="group grid gap-5 py-9 sm:grid-cols-[80px_1fr_auto] sm:gap-6">
                 <span className="chiffre text-3xl text-gris">{String(i + 1).padStart(2, '0')}</span>
                 <div>
                   <h3 className="text-2xl font-normal">{d.titre}</h3>
                   <p className="mt-2 max-w-2xl text-gris">{d.texte}</p>
                   <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-                    {d.items.map((it) => (
-                      <li key={it} className="flex items-center gap-2 text-sm text-gris">
+                    {d.items.map((it, j) => (
+                      <li key={j} className="flex items-center gap-2 text-sm text-gris">
                         <Check className="h-3.5 w-3.5 shrink-0 text-signal" strokeWidth={2.2} />
                         {it}
                       </li>
@@ -111,28 +114,28 @@ export default function Accueil() {
           <Reveal>
             <div className="flex items-center gap-3 text-white/50">
               <Workflow className="h-5 w-5" strokeWidth={1.6} />
-              <p className="text-sm font-medium uppercase tracking-[0.2em]">Notre méthode</p>
+              <p className="text-sm font-medium uppercase tracking-[0.2em]">{t.methode.eyebrow}</p>
             </div>
-            <h2 className="mt-4 max-w-2xl text-4xl font-normal tracking-tight sm:text-5xl">{SITE.methode.accroche}</h2>
+            <h2 className="mt-4 max-w-2xl text-4xl font-normal tracking-tight sm:text-5xl">{t.methode.accroche}</h2>
           </Reveal>
 
           <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-16">
             <Reveal>
-              <p className="text-lg text-white/80">{SITE.methode.description}</p>
+              <p className="text-lg text-white/80">{t.methode.description}</p>
             </Reveal>
 
             <Reveal className="verre-sombre rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 sm:p-8">
-              <h3 className="text-xl font-normal">Ce qui est inclus, à chaque projet</h3>
+              <h3 className="text-xl font-normal">{t.methode.inclusTitre}</h3>
               <Reveal as="ul" groupe className="mt-6 space-y-4">
-                {SITE.methode.inclus.map((f) => (
-                  <li key={f} className="flex items-start gap-3">
+                {t.methode.inclus.map((f, i) => (
+                  <li key={i} className="flex items-start gap-3">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-citron" strokeWidth={2} />
                     <span className="text-white/80">{f}</span>
                   </li>
                 ))}
               </Reveal>
               <a href={SITE.whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-signal mt-8 w-full">
-                Discuter de mon projet
+                {t.methode.cta}
               </a>
             </Reveal>
           </div>
@@ -142,17 +145,15 @@ export default function Accueil() {
       {/* Engagements */}
       <section id="engagements" className="mx-auto max-w-[1320px] px-4 py-20 sm:px-6 sm:py-28">
         <Reveal>
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">Nos engagements</p>
-          <h2 className="mt-3 max-w-2xl text-4xl font-normal tracking-tight sm:text-5xl">
-            Le choix de l'excellence et de l'intégrité
-          </h2>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">{t.engagements.eyebrow}</p>
+          <h2 className="mt-3 max-w-2xl text-4xl font-normal tracking-tight sm:text-5xl">{t.engagements.titre}</h2>
         </Reveal>
 
         <Reveal as="div" groupe className="mt-12 grid gap-3 sm:grid-cols-2">
-          {SITE.engagements.map((e, i) => {
+          {t.engagements.liste.map((e, i) => {
             const Icone = ICONES_ENGAGEMENTS[i] ?? ShieldCheck;
             return (
-              <div key={e.titre} className="panneau p-7 transition-transform duration-500 hover:-translate-y-1 sm:p-8">
+              <div key={i} className="panneau p-7 transition-transform duration-500 hover:-translate-y-1 sm:p-8">
                 <Icone className="h-7 w-7 text-signal" strokeWidth={1.4} />
                 <h3 className="mt-4 text-xl font-normal">{e.titre}</h3>
                 <p className="mt-2 text-gris">{e.texte}</p>
@@ -166,14 +167,14 @@ export default function Accueil() {
       <section id="contact" className="relative overflow-hidden bg-encre text-white">
         <div aria-hidden className="lueur-centree pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] rounded-full bg-signal/20 blur-[140px]" />
         <Reveal as="div" className="relative mx-auto max-w-[1320px] px-4 py-24 text-center sm:px-6 sm:py-32">
-          <h2 className="mx-auto max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">Discutons de votre projet</h2>
+          <h2 className="mx-auto max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">{t.contact.titre}</h2>
           <p className="mx-auto mt-4 max-w-xl text-white/70">{SITE.telephone} · {SITE.ville}</p>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <a href={SITE.whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-signal px-7 py-3.5 text-base">
-              WhatsApp
+              {t.contact.whatsapp}
             </a>
             <a href={`tel:${SITE.telephone.replace(/\s/g, '')}`} className="btn bg-white/10 px-7 py-3.5 text-base text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/20">
-              Appeler
+              {t.contact.appeler}
             </a>
           </div>
         </Reveal>
