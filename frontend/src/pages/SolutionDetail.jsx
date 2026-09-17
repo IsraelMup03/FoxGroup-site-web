@@ -5,11 +5,12 @@ import Cadre from '../components/Cadre';
 import { Chargement, Vide } from '../components/Etat';
 import { useLangue } from '../context/LangueContext';
 import { api } from '../lib/api';
+import { ct } from '../lib/champTraduit';
 import { SITE } from '../config/site';
 
 export default function SolutionDetail() {
   const { slug } = useParams();
-  const { t } = useLangue();
+  const { t, langue } = useLangue();
   const [solution, setSolution] = useState(undefined); // undefined = chargement, null = introuvable
   const [erreur, setErreur] = useState(null);
 
@@ -34,7 +35,10 @@ export default function SolutionDetail() {
     );
   }
 
-  const lienWhatsapp = `${SITE.whatsappUrl}?text=${encodeURIComponent(t.solutionDetail.message(solution.titre))}`;
+  const titre = ct(solution, 'titre', langue);
+  const description = ct(solution, 'description', langue);
+  const problemeResolu = ct(solution, 'probleme_resolu', langue);
+  const lienWhatsapp = `${SITE.whatsappUrl}?text=${encodeURIComponent(t.solutionDetail.message(titre))}`;
 
   return (
     <Cadre>
@@ -46,7 +50,7 @@ export default function SolutionDetail() {
       <div className="mt-6 grid gap-8 overflow-hidden lg:grid-cols-2 lg:gap-12">
         <div className="zoom-in min-w-0 overflow-hidden rounded-[28px] bg-ardoise">
           {solution.image_url ? (
-            <img src={solution.image_url} alt={solution.titre}
+            <img src={solution.image_url} alt={titre}
               className="aspect-square w-full object-cover transition-transform duration-700 hover:scale-105" />
           ) : (
             <div className="grid aspect-square w-full place-items-center text-white/50">
@@ -56,15 +60,15 @@ export default function SolutionDetail() {
         </div>
 
         <div className="min-w-0">
-          <h1 className="apparition apparition-2 break-words text-4xl font-normal tracking-tight sm:text-5xl">{solution.titre}</h1>
-          {solution.description && (
-            <p className="apparition apparition-3 mt-5 whitespace-pre-line break-words text-lg text-gris">{solution.description}</p>
+          <h1 className="apparition apparition-2 break-words text-4xl font-normal tracking-tight sm:text-5xl">{titre}</h1>
+          {description && (
+            <p className="apparition apparition-3 mt-5 whitespace-pre-line break-words text-lg text-gris">{description}</p>
           )}
 
-          {solution.probleme_resolu && (
+          {problemeResolu && (
             <div className="apparition apparition-4 panneau mt-8 p-6 sm:p-7">
               <h2 className="text-sm font-medium uppercase tracking-[0.2em] text-gris">{t.solutionDetail.ceQueCaResout}</h2>
-              <p className="mt-3 whitespace-pre-line break-words text-encre">{solution.probleme_resolu}</p>
+              <p className="mt-3 whitespace-pre-line break-words text-encre">{problemeResolu}</p>
             </div>
           )}
 

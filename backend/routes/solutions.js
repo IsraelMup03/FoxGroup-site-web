@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const pool = require('../config/db');
 
-const CHAMPS = `id, titre, slug, description_courte, description, probleme_resolu, image_url, en_vedette, cree_le`;
+const CHAMPS = `id, titre, titre_en, slug, description_courte, description_courte_en,
+  description, description_en, probleme_resolu, probleme_resolu_en, image_url, en_vedette, cree_le`;
 
 router.get('/', async (req, res, next) => {
   try {

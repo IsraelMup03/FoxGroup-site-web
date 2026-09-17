@@ -4,6 +4,7 @@ const exigerAdmin = require('../middleware/auth');
 const uploadMedia = require('../middleware/uploadMedia');
 const { envoyerMedia, supprimerMedia } = require('../config/cloudinary');
 const { nettoyer, entier, genererSlug } = require('../services/utils');
+const { traduireChamps } = require('../services/traduction');
 
 router.use(exigerAdmin);
 
@@ -35,10 +36,12 @@ router.post('/equipe', uploadMedia.single('photo'), async (req, res, next) => {
     let photo = null;
     if (req.file) photo = await envoyerMedia(req.file.buffer, 'image', { mimetype: req.file.mimetype, baseUrl: urlBase(req) });
 
+    const { role_en, bio_en } = await traduireChamps({ role, bio });
+
     const { rows } = await pool.query(
-      `INSERT INTO equipe (nom, role, bio, ordre, photo_url, photo_public_id)
-       VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-      [nom, role, bio, ordre, photo?.secure_url || null, photo?.public_id || null]
+      `INSERT INTO equipe (nom, role, role_en, bio, bio_en, ordre, photo_url, photo_public_id)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+      [nom, role, role_en, bio, bio_en, ordre, photo?.secure_url || null, photo?.public_id || null]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -79,10 +82,12 @@ router.put('/equipe/:id', uploadMedia.single('photo'), async (req, res, next) =>
       photoId = null;
     }
 
+    const { role_en, bio_en } = await traduireChamps({ role, bio });
+
     const { rows } = await pool.query(
-      `UPDATE equipe SET nom=$1, role=$2, bio=$3, ordre=$4, actif=$5, photo_url=$6, photo_public_id=$7
-       WHERE id=$8 RETURNING *`,
-      [nom, role, bio, ordre, actif, photoUrl, photoId, id]
+      `UPDATE equipe SET nom=$1, role=$2, role_en=$3, bio=$4, bio_en=$5, ordre=$6, actif=$7, photo_url=$8, photo_public_id=$9
+       WHERE id=$10 RETURNING *`,
+      [nom, role, role_en, bio, bio_en, ordre, actif, photoUrl, photoId, id]
     );
     if (aSupprimer) await supprimerMedia(aSupprimer);
     res.json(rows[0]);
@@ -145,10 +150,22 @@ router.post('/solutions', uploadMedia.single('image'), async (req, res, next) =>
     let image = null;
     if (req.file) image = await envoyerMedia(req.file.buffer, 'image', { mimetype: req.file.mimetype, baseUrl: urlBase(req) });
 
+    const traductions = await traduireChamps({
+      titre, description_courte: descriptionCourte, description, probleme_resolu: problemeResolu,
+    });
+
     const { rows } = await pool.query(
-      `INSERT INTO solutions (titre, slug, description_courte, description, probleme_resolu, ordre, en_vedette, image_url, image_public_id)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
-      [titre, slug, descriptionCourte, description, problemeResolu, ordre, enVedette, image?.secure_url || null, image?.public_id || null]
+      `INSERT INTO solutions
+        (titre, titre_en, slug, description_courte, description_courte_en, description, description_en,
+         probleme_resolu, probleme_resolu_en, ordre, en_vedette, image_url, image_public_id)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
+      [
+        titre, traductions.titre_en, slug,
+        descriptionCourte, traductions.description_courte_en,
+        description, traductions.description_en,
+        problemeResolu, traductions.probleme_resolu_en,
+        ordre, enVedette, image?.secure_url || null, image?.public_id || null,
+      ]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -192,11 +209,22 @@ router.put('/solutions/:id', uploadMedia.single('image'), async (req, res, next)
       imageId = null;
     }
 
+    const traductions = await traduireChamps({
+      titre, description_courte: descriptionCourte, description, probleme_resolu: problemeResolu,
+    });
+
     const { rows } = await pool.query(
-      `UPDATE solutions SET titre=$1, slug=$2, description_courte=$3, description=$4, probleme_resolu=$5,
-         ordre=$6, en_vedette=$7, actif=$8, image_url=$9, image_public_id=$10, modifie_le=NOW()
-       WHERE id=$11 RETURNING *`,
-      [titre, slug, descriptionCourte, description, problemeResolu, ordre, enVedette, actif, imageUrl, imageId, id]
+      `UPDATE solutions SET titre=$1, titre_en=$2, slug=$3, description_courte=$4, description_courte_en=$5,
+         description=$6, description_en=$7, probleme_resolu=$8, probleme_resolu_en=$9,
+         ordre=$10, en_vedette=$11, actif=$12, image_url=$13, image_public_id=$14, modifie_le=NOW()
+       WHERE id=$15 RETURNING *`,
+      [
+        titre, traductions.titre_en, slug,
+        descriptionCourte, traductions.description_courte_en,
+        description, traductions.description_en,
+        problemeResolu, traductions.probleme_resolu_en,
+        ordre, enVedette, actif, imageUrl, imageId, id,
+      ]
     );
     if (aSupprimer) await supprimerMedia(aSupprimer);
     res.json(rows[0]);

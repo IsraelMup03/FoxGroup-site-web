@@ -10,6 +10,7 @@ import Reveal from '../components/Reveal';
 import { Chargement, Erreur } from '../components/Etat';
 import { useLangue } from '../context/LangueContext';
 import { api } from '../lib/api';
+import { ct } from '../lib/champTraduit';
 import { SITE } from '../config/site';
 
 const ICONES_DOMAINES = [Code2, Settings2, Network];
@@ -37,7 +38,7 @@ function DecorHero() {
 }
 
 export default function Accueil() {
-  const { t } = useLangue();
+  const { t, langue } = useLangue();
   const [equipe, setEquipe] = useState(null);
   const [erreurEquipe, setErreurEquipe] = useState(null);
   const [solutions, setSolutions] = useState(null);
@@ -111,8 +112,8 @@ export default function Accueil() {
                     </div>
                   )}
                   <h3 className="mt-4 break-words text-lg font-normal">{m.nom}</h3>
-                  <p className="break-words text-sm text-signal">{m.role}</p>
-                  {m.bio && <p className="mt-2 break-words text-sm text-gris">{m.bio}</p>}
+                  <p className="break-words text-sm text-signal">{ct(m, 'role', langue)}</p>
+                  {m.bio && <p className="mt-2 break-words text-sm text-gris">{ct(m, 'bio', langue)}</p>}
                 </div>
               ))}
             </Reveal>
@@ -174,7 +175,7 @@ export default function Accueil() {
                 <Link key={s.id} to={`/solutions/${s.slug}`} className="panneau group flex flex-col overflow-hidden p-3">
                   <div className="overflow-hidden rounded-[20px] bg-ardoise">
                     {s.image_url ? (
-                      <img src={s.image_url} alt={s.titre} loading="lazy"
+                      <img src={s.image_url} alt={ct(s, 'titre', langue)} loading="lazy"
                         className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     ) : (
                       <div className="grid aspect-[4/3] w-full place-items-center text-white/50">
@@ -183,8 +184,8 @@ export default function Accueil() {
                     )}
                   </div>
                   <div className="flex flex-1 flex-col px-2 pb-1 pt-4">
-                    <h3 className="break-words text-lg font-normal leading-snug">{s.titre}</h3>
-                    {s.description_courte && <p className="mt-1.5 break-words text-sm text-gris">{s.description_courte}</p>}
+                    <h3 className="break-words text-lg font-normal leading-snug">{ct(s, 'titre', langue)}</h3>
+                    {s.description_courte && <p className="mt-1.5 break-words text-sm text-gris">{ct(s, 'description_courte', langue)}</p>}
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-signal">
                       {t.solutions.enSavoirPlus} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
                     </span>
