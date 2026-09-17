@@ -110,9 +110,9 @@ export default function Accueil() {
                       <User className="h-9 w-9" strokeWidth={1} />
                     </div>
                   )}
-                  <h3 className="mt-4 text-lg font-normal">{m.nom}</h3>
-                  <p className="text-sm text-signal">{m.role}</p>
-                  {m.bio && <p className="mt-2 text-sm text-gris">{m.bio}</p>}
+                  <h3 className="mt-4 break-words text-lg font-normal">{m.nom}</h3>
+                  <p className="break-words text-sm text-signal">{m.role}</p>
+                  {m.bio && <p className="mt-2 break-words text-sm text-gris">{m.bio}</p>}
                 </div>
               ))}
             </Reveal>
@@ -183,8 +183,8 @@ export default function Accueil() {
                     )}
                   </div>
                   <div className="flex flex-1 flex-col px-2 pb-1 pt-4">
-                    <h3 className="text-lg font-normal leading-snug">{s.titre}</h3>
-                    {s.description_courte && <p className="mt-1.5 text-sm text-gris">{s.description_courte}</p>}
+                    <h3 className="break-words text-lg font-normal leading-snug">{s.titre}</h3>
+                    {s.description_courte && <p className="mt-1.5 break-words text-sm text-gris">{s.description_courte}</p>}
                     <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-signal">
                       {t.solutions.enSavoirPlus} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
                     </span>

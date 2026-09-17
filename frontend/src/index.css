@@ -88,6 +88,20 @@
 .apparition-2 { animation-delay: 0.22s; }
 .apparition-3 { animation-delay: 0.36s; }
 .apparition-4 { animation-delay: 0.5s; }
+.apparition-5 { animation-delay: 0.64s; }
+.apparition-6 { animation-delay: 0.78s; }
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+.zoom-in { animation: zoomIn 1s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@keyframes pulseDouce {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(232 73 46 / 0.35); }
+  50% { box-shadow: 0 0 0 10px rgb(232 73 46 / 0); }
+}
+.pulse-douce { animation: pulseDouce 2.6s ease-out infinite; }
 
 /* Révélation au défilement */
 .reveal {
