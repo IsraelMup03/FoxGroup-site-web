@@ -84,7 +84,7 @@ export default function Accueil() {
         <Reveal>
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-gris">{t.apropos.eyebrow}</p>
           <div className="mt-5 grid gap-8 lg:grid-cols-2 lg:gap-16">
-            <h2 className="text-3xl font-normal leading-snug tracking-tight sm:text-4xl">{t.hero.accroche}</h2>
+            <h2 className="text-3xl font-normal leading-snug tracking-tight sm:text-4xl">{t.apropos.titre}</h2>
             <p className="text-lg text-gris">{t.apropos.description}</p>
           </div>
         </Reveal>
@@ -105,7 +105,7 @@ export default function Accueil() {
               {equipe.map((m) => (
                 <div key={m.id} className="panneau flex flex-col items-center p-6 text-center transition-transform duration-500 hover:-translate-y-1">
                   {m.photo_url ? (
-                    <img src={m.photo_url} alt={m.nom} className="h-24 w-24 rounded-full object-cover" />
+                    <img src={m.photo_url} alt={m.nom} loading="lazy" className="h-24 w-24 rounded-full object-cover" />
                   ) : (
                     <div className="grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-[#C9D2E0] to-[#95A5C0] text-white">
                       <User className="h-9 w-9" strokeWidth={1} />

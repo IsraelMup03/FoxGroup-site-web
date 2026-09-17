@@ -44,10 +44,12 @@ export const TRADUCTIONS = {
     },
     apropos: {
       eyebrow: 'Qui sommes-nous',
+      titre: 'Un collectif de jeunes freelances congolais',
       description:
-        "FoxGroup vous accompagne à Kinshasa et partout en RDC pour transformer vos idées en réalités digitales durables. " +
-        "Nous concevons, installons et accompagnons des solutions numériques taillées pour la réalité du terrain congolais : " +
-        "connexion internet parfois instable, besoin de fiabilité au quotidien, et exigence d'un vrai accompagnement humain.",
+        "FoxGroup est une association de jeunes freelances basés à Kinshasa, réunis pour offrir aux entreprises, écoles " +
+        "et porteurs de projets de RDC des solutions numériques sérieuses, sans les coûts et la lourdeur d'une grande agence. " +
+        "Nous concevons, installons et accompagnons des solutions taillées pour la réalité du terrain congolais : connexion " +
+        "internet parfois instable, besoin de fiabilité au quotidien, et exigence d'un vrai accompagnement humain.",
     },
     domaines: {
       eyebrow: 'Nos expertises',
@@ -282,9 +284,11 @@ export const TRADUCTIONS = {
     },
     apropos: {
       eyebrow: 'About us',
+      titre: 'A collective of young Congolese freelancers',
       description:
-        "FoxGroup supports you in Kinshasa and across the DRC to turn your ideas into lasting digital realities. " +
-        "We design, install, and support digital solutions built for the realities on the ground in Congo: " +
+        "FoxGroup is an association of young freelancers based in Kinshasa, brought together to offer businesses, " +
+        "schools, and project owners across the DRC serious digital solutions — without the cost and overhead of a " +
+        "large agency. We design, install, and support solutions built for the realities on the ground in Congo: " +
         "sometimes unstable internet connections, the need for everyday reliability, and genuine human support.",
     },
     domaines: {
@@ -522,11 +526,12 @@ export const TRADUCTIONS = {
     },
     apropos: {
       eyebrow: 'Biso nani ?',
+      titre: 'Ekipi ya ba jeune freelance ya Congo',
       description:
-        "FoxGroup esungaka bino na Kinshasa mpe na RDC mobimba mpo na kokómisa makanisi na bino misala ya numérique " +
-        "oyo ekowumela. Tosalaka mpe totiaka ba solution ya numérique oyo ekokani na bomoi ya mokili ya Congo : " +
-        "internet oyo ezalaka ntango mosusu makasi te, bosenga ya kozala solide mikolo nyonso, mpe bosenga ya lisungi " +
-        "ya bato ya solo.",
+        "FoxGroup ezali association ya ba jeune freelance oyo bazali na Kinshasa, basangani mpo na kopesa ba entreprise, " +
+        "ba eteyelo, na bato oyo bazali na ba projet na RDC, ba solution ya numérique ya solo — kasi na mbongo mingi te " +
+        "lokola agence ya monene. Tosalaka mpe totiaka ba solution oyo ekokani na bomoi ya mokili ya Congo : internet " +
+        "oyo ezalaka ntango mosusu makasi te, bosenga ya kozala solide mikolo nyonso, mpe bosenga ya lisungi ya bato ya solo.",
     },
     domaines: {
       eyebrow: 'Makoki na biso',
