@@ -2,7 +2,7 @@ import { LANGUES } from '../i18n/traductions';
 import { useLangue } from '../context/LangueContext';
 
 export default function SelecteurLangue({ surImage = false }) {
-  const { langue, definirLangue } = useLangue();
+  const { langue, definirLangue, t } = useLangue();
 
   return (
     <div
@@ -10,7 +10,7 @@ export default function SelecteurLangue({ surImage = false }) {
         surImage ? 'bg-white/10' : 'bg-brume'
       }`}
       role="group"
-      aria-label="Choisir la langue"
+      aria-label={t.commun.choisirLangue}
     >
       {LANGUES.map(({ code, libelle }) => (
         <button

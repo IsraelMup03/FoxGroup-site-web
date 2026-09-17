@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
+import { useLangue } from '../context/LangueContext';
 
 export default function Modal({ titre, onFermer, children, large = false }) {
+  const { t } = useLangue();
   useEffect(() => {
     const touche = (e) => e.key === 'Escape' && onFermer();
     document.addEventListener('keydown', touche);
@@ -21,7 +23,7 @@ export default function Modal({ titre, onFermer, children, large = false }) {
         className={`max-h-[92vh] w-full overflow-y-auto rounded-t-[28px] bg-verre p-6 sm:rounded-[28px] sm:p-8 ${large ? 'sm:max-w-3xl' : 'sm:max-w-lg'}`}>
         <div className="mb-6 flex items-center justify-between gap-4">
           <h2 className="text-2xl font-normal">{titre}</h2>
-          <button type="button" onClick={onFermer} className="grid h-10 w-10 place-items-center rounded-full hover:bg-white" aria-label="Fermer">
+          <button type="button" onClick={onFermer} className="grid h-10 w-10 place-items-center rounded-full hover:bg-white" aria-label={t.commun.fermer}>
             <X className="h-5 w-5" strokeWidth={1.6} />
           </button>
         </div>

@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Pencil, Plus, Sparkles, Trash2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useLangue } from '../context/LangueContext';
 import { Chargement, Erreur, Vide } from '../components/Etat';
 import Modal from '../components/Modal';
 import SolutionForm from './SolutionForm';
 
 export default function Solutions() {
   const { appel } = useAuth();
+  const { t } = useLangue();
+  const tx = t.admin.solutions;
   const [solutions, setSolutions] = useState(null);
   const [erreur, setErreur] = useState(null);
   const [edition, setEdition] = useState(undefined);
@@ -45,19 +48,19 @@ export default function Solutions() {
     <div>
       <div className="flex items-end justify-between gap-4 px-2 pb-5 pt-2">
         <div>
-          <h1 className="text-4xl font-normal tracking-tight">Solutions</h1>
-          <p className="mt-1 text-gris">Les projets affichés dans la section « Nos solutions » du site.</p>
+          <h1 className="text-4xl font-normal tracking-tight">{tx.titre}</h1>
+          <p className="mt-1 text-gris">{tx.sousTitre}</p>
         </div>
         <button type="button" className="btn btn-signal" onClick={() => setEdition(null)}>
-          <Plus className="h-4 w-4" /> Ajouter
+          <Plus className="h-4 w-4" /> {tx.ajouter}
         </button>
       </div>
 
       {erreur && <div className="mb-3"><Erreur message={erreur} onReessayer={charger} /></div>}
       {!solutions && !erreur && <Chargement />}
       {solutions && solutions.length === 0 && (
-        <Vide titre="Aucune solution" texte="Publiez votre première réalisation."
-          action={<button type="button" className="btn btn-signal" onClick={() => setEdition(null)}>Ajouter une solution</button>} />
+        <Vide titre={tx.aucuneTitre} texte={tx.aucuneTexte}
+          action={<button type="button" className="btn btn-signal" onClick={() => setEdition(null)}>{tx.ajouterSolution}</button>} />
       )}
 
       {solutions && solutions.length > 0 && (
@@ -76,14 +79,14 @@ export default function Solutions() {
                 <p className="truncate text-sm text-gris">{s.description_courte || s.description}</p>
               </div>
               <div className="hidden flex-wrap justify-end gap-1.5 sm:flex">
-                {s.en_vedette && <span className="rounded-md bg-citron px-2 py-0.5 text-xs font-medium">En avant</span>}
-                {!s.actif && <span className="rounded-md border border-trait px-2 py-0.5 text-xs text-gris">Masqué</span>}
+                {s.en_vedette && <span className="rounded-md bg-citron px-2 py-0.5 text-xs font-medium">{tx.enAvant}</span>}
+                {!s.actif && <span className="rounded-md border border-trait px-2 py-0.5 text-xs text-gris">{tx.masque}</span>}
               </div>
               <div className="flex gap-1">
-                <button type="button" onClick={() => setEdition(s)} className="grid h-10 w-10 place-items-center rounded-full hover:bg-white" aria-label={`Modifier ${s.titre}`}>
+                <button type="button" onClick={() => setEdition(s)} className="grid h-10 w-10 place-items-center rounded-full hover:bg-white" aria-label={tx.modifier(s.titre)}>
                   <Pencil className="h-4 w-4" strokeWidth={1.6} />
                 </button>
-                <button type="button" onClick={() => setASupprimer(s)} className="grid h-10 w-10 place-items-center rounded-full text-gris hover:bg-white hover:text-signal" aria-label={`Supprimer ${s.titre}`}>
+                <button type="button" onClick={() => setASupprimer(s)} className="grid h-10 w-10 place-items-center rounded-full text-gris hover:bg-white hover:text-signal" aria-label={tx.supprimer(s.titre)}>
                   <Trash2 className="h-4 w-4" strokeWidth={1.6} />
                 </button>
               </div>
@@ -97,12 +100,12 @@ export default function Solutions() {
       )}
 
       {aSupprimer && (
-        <Modal titre="Supprimer cette solution ?" onFermer={() => setASupprimer(null)}>
-          <p className="text-gris">« {aSupprimer.titre} » sera retirée du site.</p>
+        <Modal titre={tx.confirmerSuppressionTitre} onFermer={() => setASupprimer(null)}>
+          <p className="text-gris">{tx.confirmerSuppressionTexte(aSupprimer.titre)}</p>
           <div className="mt-6 flex justify-end gap-2">
-            <button type="button" className="btn btn-clair" onClick={() => setASupprimer(null)}>Annuler</button>
+            <button type="button" className="btn btn-clair" onClick={() => setASupprimer(null)}>{tx.annuler}</button>
             <button type="button" className="btn btn-signal" onClick={supprimer} disabled={suppression}>
-              {suppression ? 'Suppression…' : 'Supprimer'}
+              {suppression ? tx.suppressionEnCours : tx.supprimerBouton}
             </button>
           </div>
         </Modal>

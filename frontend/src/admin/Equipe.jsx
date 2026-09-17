@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Pencil, Plus, Trash2, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useLangue } from '../context/LangueContext';
 import { Chargement, Erreur, Vide } from '../components/Etat';
 import Modal from '../components/Modal';
 import EquipeForm from './EquipeForm';
 
 export default function Equipe() {
   const { appel } = useAuth();
+  const { t } = useLangue();
+  const tx = t.admin.equipe;
   const [membres, setMembres] = useState(null);
   const [erreur, setErreur] = useState(null);
   const [edition, setEdition] = useState(undefined);
@@ -45,19 +48,19 @@ export default function Equipe() {
     <div>
       <div className="flex items-end justify-between gap-4 px-2 pb-5 pt-2">
         <div>
-          <h1 className="text-4xl font-normal tracking-tight">Équipe</h1>
-          <p className="mt-1 text-gris">Les profils affichés dans la section « Notre équipe » du site.</p>
+          <h1 className="text-4xl font-normal tracking-tight">{tx.titre}</h1>
+          <p className="mt-1 text-gris">{tx.sousTitre}</p>
         </div>
         <button type="button" className="btn btn-signal" onClick={() => setEdition(null)}>
-          <Plus className="h-4 w-4" /> Ajouter
+          <Plus className="h-4 w-4" /> {tx.ajouter}
         </button>
       </div>
 
       {erreur && <div className="mb-3"><Erreur message={erreur} onReessayer={charger} /></div>}
       {!membres && !erreur && <Chargement />}
       {membres && membres.length === 0 && (
-        <Vide titre="Aucun membre" texte="Ajoutez les 5 profils de votre équipe."
-          action={<button type="button" className="btn btn-signal" onClick={() => setEdition(null)}>Ajouter un membre</button>} />
+        <Vide titre={tx.aucunTitre} texte={tx.aucunTexte}
+          action={<button type="button" className="btn btn-signal" onClick={() => setEdition(null)}>{tx.ajouterMembre}</button>} />
       )}
 
       {membres && membres.length > 0 && (
@@ -75,12 +78,12 @@ export default function Equipe() {
                 <p className="truncate font-normal">{m.nom}</p>
                 <p className="text-sm text-gris">{m.role}</p>
               </div>
-              {!m.actif && <span className="rounded-md border border-trait px-2 py-0.5 text-xs text-gris">Masqué</span>}
+              {!m.actif && <span className="rounded-md border border-trait px-2 py-0.5 text-xs text-gris">{tx.masque}</span>}
               <div className="flex gap-1">
-                <button type="button" onClick={() => setEdition(m)} className="grid h-10 w-10 place-items-center rounded-full hover:bg-white" aria-label={`Modifier ${m.nom}`}>
+                <button type="button" onClick={() => setEdition(m)} className="grid h-10 w-10 place-items-center rounded-full hover:bg-white" aria-label={tx.modifier(m.nom)}>
                   <Pencil className="h-4 w-4" strokeWidth={1.6} />
                 </button>
-                <button type="button" onClick={() => setASupprimer(m)} className="grid h-10 w-10 place-items-center rounded-full text-gris hover:bg-white hover:text-signal" aria-label={`Supprimer ${m.nom}`}>
+                <button type="button" onClick={() => setASupprimer(m)} className="grid h-10 w-10 place-items-center rounded-full text-gris hover:bg-white hover:text-signal" aria-label={tx.supprimer(m.nom)}>
                   <Trash2 className="h-4 w-4" strokeWidth={1.6} />
                 </button>
               </div>
@@ -94,12 +97,12 @@ export default function Equipe() {
       )}
 
       {aSupprimer && (
-        <Modal titre="Supprimer ce membre ?" onFermer={() => setASupprimer(null)}>
-          <p className="text-gris">« {aSupprimer.nom} » sera retiré du site.</p>
+        <Modal titre={tx.confirmerSuppressionTitre} onFermer={() => setASupprimer(null)}>
+          <p className="text-gris">{tx.confirmerSuppressionTexte(aSupprimer.nom)}</p>
           <div className="mt-6 flex justify-end gap-2">
-            <button type="button" className="btn btn-clair" onClick={() => setASupprimer(null)}>Annuler</button>
+            <button type="button" className="btn btn-clair" onClick={() => setASupprimer(null)}>{tx.annuler}</button>
             <button type="button" className="btn btn-signal" onClick={supprimer} disabled={suppression}>
-              {suppression ? 'Suppression…' : 'Supprimer'}
+              {suppression ? tx.suppressionEnCours : tx.supprimerBouton}
             </button>
           </div>
         </Modal>

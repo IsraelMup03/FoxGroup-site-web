@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { ImagePlus } from 'lucide-react';
 import Modal from '../components/Modal';
 import { useAuth } from '../context/AuthContext';
+import { useLangue } from '../context/LangueContext';
 
 export default function SolutionForm({ solution, onFermer, onEnregistre }) {
   const { appel } = useAuth();
+  const { t } = useLangue();
+  const tx = t.admin.solutionForm;
   const edition = Boolean(solution);
 
   const [form, setForm] = useState({
@@ -33,7 +36,7 @@ export default function SolutionForm({ solution, onFermer, onEnregistre }) {
     const f = e.target.files?.[0];
     if (!f) return;
     if (f.size > 5 * 1024 * 1024) {
-      setErreur("L'image dépasse 5 Mo.");
+      setErreur(tx.erreurTailleImage);
       return;
     }
     setErreur(null);
@@ -64,63 +67,63 @@ export default function SolutionForm({ solution, onFermer, onEnregistre }) {
   };
 
   return (
-    <Modal titre={edition ? 'Modifier la solution' : 'Ajouter une solution'} onFermer={onFermer} large>
+    <Modal titre={edition ? tx.modifierTitre : tx.ajouterTitre} onFermer={onFermer} large>
       <form onSubmit={envoyer} className="grid gap-5 md:grid-cols-[220px_1fr]">
         <div>
           <label className="group relative block aspect-square cursor-pointer overflow-hidden rounded-[22px] border border-dashed border-acier bg-white/60">
             {apercu ? (
-              <img src={apercu} alt="Aperçu" className="h-full w-full object-cover" />
+              <img src={apercu} alt="" className="h-full w-full object-cover" />
             ) : (
               <span className="flex h-full flex-col items-center justify-center gap-2 text-sm text-gris">
-                <ImagePlus className="h-8 w-8" strokeWidth={1.2} /> Image
+                <ImagePlus className="h-8 w-8" strokeWidth={1.2} /> {tx.image}
               </span>
             )}
             <input type="file" accept="image/jpeg,image/png,image/webp" onChange={choisirImage} className="sr-only" />
           </label>
-          <p className="mt-2 text-xs text-gris">JPG, PNG ou WebP, 5 Mo maximum.</p>
+          <p className="mt-2 text-xs text-gris">{tx.imageAide}</p>
           {apercu && (
             <button type="button" className="mt-2 text-sm text-signal-fonce hover:underline"
               onClick={() => { setApercu(null); setFichier(null); setRetirerImage(edition); }}>
-              Retirer l'image
+              {tx.retirerImage}
             </button>
           )}
         </div>
 
         <div className="grid gap-4">
           <label>
-            <span className="libelle">Titre</span>
-            <input className="champ" value={form.titre} onChange={maj('titre')} required minLength={2} placeholder="Ex. EcolePay" />
+            <span className="libelle">{tx.titreChamp}</span>
+            <input className="champ" value={form.titre} onChange={maj('titre')} required minLength={2} placeholder={tx.titrePlaceholder} />
           </label>
 
           <label>
-            <span className="libelle">Courte description (affichée sur la carte, optionnel)</span>
+            <span className="libelle">{tx.descriptionCourte}</span>
             <input className="champ" value={form.description_courte} onChange={maj('description_courte')} maxLength={300} />
           </label>
 
           <label>
-            <span className="libelle">Description complète</span>
+            <span className="libelle">{tx.descriptionComplete}</span>
             <textarea className="champ min-h-32 resize-y" value={form.description} onChange={maj('description')} maxLength={5000} />
           </label>
 
           <label>
-            <span className="libelle">Ce que ça résout</span>
+            <span className="libelle">{tx.probleme}</span>
             <textarea className="champ min-h-24 resize-y" value={form.probleme_resolu} onChange={maj('probleme_resolu')} maxLength={3000}
-              placeholder="Quel problème concret cette solution règle-t-elle pour le client ?" />
+              placeholder={tx.problemePlaceholder} />
           </label>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <label>
-              <span className="libelle">Ordre d'affichage</span>
+              <span className="libelle">{tx.ordre}</span>
               <input className="champ" type="number" step="1" value={form.ordre} onChange={maj('ordre')} />
             </label>
             <div className="flex flex-col justify-end gap-2 pb-2">
               <label className="flex items-center gap-3">
                 <input type="checkbox" checked={form.en_vedette} onChange={maj('en_vedette')} className="h-5 w-5 accent-signal" />
-                Mettre en avant
+                {tx.mettreEnAvant}
               </label>
               <label className="flex items-center gap-3">
                 <input type="checkbox" checked={form.actif} onChange={maj('actif')} className="h-5 w-5 accent-signal" />
-                Visible sur le site
+                {tx.visible}
               </label>
             </div>
           </div>
@@ -128,9 +131,9 @@ export default function SolutionForm({ solution, onFermer, onEnregistre }) {
           {erreur && <p className="text-sm text-signal-fonce" role="alert">{erreur}</p>}
 
           <div className="flex justify-end gap-2">
-            <button type="button" className="btn btn-clair" onClick={onFermer}>Annuler</button>
+            <button type="button" className="btn btn-clair" onClick={onFermer}>{tx.annuler}</button>
             <button type="submit" className="btn btn-signal" disabled={envoi}>
-              {envoi ? 'Enregistrement…' : edition ? 'Enregistrer' : 'Publier'}
+              {envoi ? tx.enregistrement : edition ? tx.enregistrer : tx.publier}
             </button>
           </div>
         </div>

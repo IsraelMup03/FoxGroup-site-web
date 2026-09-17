@@ -5,7 +5,7 @@ import { Chargement } from '../components/Etat';
 export default function RouteProtegee({ children }) {
   const { token, verification } = useAuth();
   const location = useLocation();
-  if (verification) return <Chargement texte="Vérification de la session…" />;
+  if (verification) return <Chargement />;
   if (!token) return <Navigate to="/admin/connexion" replace state={{ depuis: location.pathname }} />;
   return children;
 }
