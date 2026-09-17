@@ -9,6 +9,7 @@ router.get('/', async (req, res, next) => {
     const { rows } = await pool.query(
       `SELECT ${CHAMPS} FROM solutions WHERE actif = TRUE ORDER BY ordre ASC, cree_le DESC`
     );
+    res.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
     res.json(rows);
   } catch (err) {
     next(err);
@@ -22,6 +23,7 @@ router.get('/:slug', async (req, res, next) => {
       [req.params.slug]
     );
     if (!rows[0]) return res.status(404).json({ erreur: 'Solution introuvable.' });
+    res.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
     res.json(rows[0]);
   } catch (err) {
     next(err);

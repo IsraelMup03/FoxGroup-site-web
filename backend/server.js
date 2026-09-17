@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
+const rateLimit = require('express-rate-limit');
 const { DOSSIER_LOCAL } = require('./config/cloudinary');
 const { initialiser } = require('./db/initialiser');
 
@@ -31,8 +33,21 @@ app.use(
     },
   })
 );
+app.use(compression());
 app.use(express.json({ limit: '1mb' }));
-app.use('/uploads', express.static(DOSSIER_LOCAL));
+app.use('/uploads', express.static(DOSSIER_LOCAL, { maxAge: '7d', immutable: true }));
+
+// Limite globale anti-abus (scraping, bots) : large marge pour ne jamais gêner un usage normal.
+app.use(
+  '/api',
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 300,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { erreur: 'Trop de requêtes. Réessayez dans quelques minutes.' },
+  })
+);
 
 app.get('/', (req, res) => res.json({ service: 'API FoxGroup', statut: 'en ligne' }));
 app.get('/api/sante', (req, res) => res.json({ statut: 'ok', heure: new Date().toISOString() }));
